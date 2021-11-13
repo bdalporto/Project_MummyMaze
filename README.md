@@ -21,10 +21,10 @@ Inspired from the original game creators, we could possibly implement the follow
 Another way to make the game more interesting would be using a seed-method of level generation, creating a random level based on RNG parameters to an input function.
 
 We plan on developing this game in stages:
-Get the game functionality working, no major graphical components
-Implement basic graphics
-Implement features to each level to increase difficulty
-Implement graphics to make it resemble the original design (or something greater than simple models or shapes).
+1. Get the game functionality working, no major graphical components
+2. Implement basic graphics
+3. Implement features to each level to increase difficulty
+4. Implement graphics to make it resemble the original design (or something greater than simple models or shapes).
 
 ![Alt text](https://bigheadghost.github.io/img/2014/mummy_maze_with_longest_solution.jpg "Optional title")
 
