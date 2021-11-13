@@ -12,11 +12,11 @@ The game involves a player: the Indiana Jones-like adventurer and an evil mummy 
 The game gets more difficult as the levels progress, including possible additions if the development of the game progresses well over the rest of the quarter. 
 Inspired from the original game creators, we could possibly implement the following features to make each level more difficult:
 
-Different kinds of mummies
-Scorpions
-Keys
-Darker room
-Traps 
+* Different kinds of mummies
+* Scorpions
+* Keys
+* Darker room
+* Traps 
 
 Another way to make the game more interesting would be using a seed-method of level generation, creating a random level based on RNG parameters to an input function.
 
