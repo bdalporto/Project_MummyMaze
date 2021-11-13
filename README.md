@@ -26,6 +26,7 @@ Implement basic graphics
 Implement features to each level to increase difficulty
 Implement graphics to make it resemble the original design (or something greater than simple models or shapes).
 
+![Alt text](https://bigheadghost.github.io/img/2014/mummy_maze_with_longest_solution.jpg "Optional title")
 
 ​​
 
