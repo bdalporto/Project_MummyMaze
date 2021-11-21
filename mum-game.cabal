@@ -1,0 +1,64 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 18bc1a651df70f1c4629c7b23a0ad67cb87fb1aeba620c405f5b330734187be1
+
+name:           mum-game
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/mum-game#readme>
+homepage:       https://github.com/githubuser/mum-game#readme
+bug-reports:    https://github.com/githubuser/mum-game/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2021 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/mum-game
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_mum_game
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable mum-game-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_mum_game
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , brick
+    , mum-game
+    , vty
+  default-language: Haskell2010
+
+test-suite mum-game-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_mum_game
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , mum-game
+  default-language: Haskell2010
