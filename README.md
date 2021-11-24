@@ -26,5 +26,15 @@ We plan on developing this game in stages:
 
 ![Alt text](https://bigheadghost.github.io/img/2014/mummy_maze_with_longest_solution.jpg "Optional title")
 
+
+
+***TODO*** 
+-Traps 
+-Keys -----> Walls / Exit
+- Controls UI
+    -Display Level name 
+-Dark Rooms
+-Make graphics better
+- 
 ​​
 
