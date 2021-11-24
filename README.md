@@ -29,12 +29,12 @@ We plan on developing this game in stages:
 
 
 ***TODO*** 
--Traps 
--Keys -----> Walls / Exit
-- Controls UI
-    -Display Level name 
--Dark Rooms
--Make graphics better
+* Traps 
+* Keys -----> Walls / Exit
+* Controls UI
+    - Display Level name 
+* Dark Rooms
+* Make graphics better
 - 
 ​​
 
