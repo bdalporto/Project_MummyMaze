@@ -13,13 +13,14 @@ import qualified Brick.Widgets.Border.Style as BS
 import qualified Brick.Widgets.Border as B
 import Levels
 import PickLevel (pickLevel)
+import qualified Brick.Widgets.Border as C
 -- Custom event
 data Counter = Counter
 
 type Name = ()
 
 choose_Level :: Int -> Game
-choose_Level l  
+choose_Level l
    | l == 1  = Levels.test
    | l == 2  = you_Win
    | l == 3  = you_Lose
@@ -41,7 +42,7 @@ handleEvent :: Game -> BrickEvent Name Counter -> EventM Name (Next Game)
 handleEvent g (AppEvent Counter)                    =  continue $ counterStep  g
 handleEvent g (VtyEvent (V.EvKey (V.KChar 'q') [])) = halt g
 handleEvent g (VtyEvent (V.EvKey V.KEsc []))        = halt g
-handleEvent g (VtyEvent (V.EvKey (V.KChar 'r') [])) = halt start_Screen 
+handleEvent g (VtyEvent (V.EvKey (V.KChar 'r') [])) = halt start_Screen
 handleEvent g (VtyEvent (V.EvKey V.KUp []))         = continue $ moveExplorer North g
 handleEvent g (VtyEvent (V.EvKey V.KDown []))       = continue $ moveExplorer South g
 handleEvent g (VtyEvent (V.EvKey V.KRight []))      = continue $ moveExplorer East g
@@ -138,14 +139,45 @@ validMove d c@(Coord x y) g | d == North && notElem (Coord x y) (_hwalls g) && y
 drawUI :: Game -> [Widget Name]
 drawUI g = case _gameState g of
     SelectScreen -> [drawGrid g]
-    Playing -> drawCharacters g ++ [drawGrid g]
-    Lose -> [drawGrid you_Lose]
+    Playing -> drawCharacters g ++ [drawGrid g]  ++ [drawHelp]
+    Lose -> [drawGameOver True]
     Win -> [drawGrid you_Win]
 {-
 drawUI :: Game -> [Widget Name]
 drawUI g | (_gameState g) == Playing   = (drawCharacters g) ++ [(drawGrid g)]
          | otherwise          = [(drawGrid g)]
 -}
+
+drawGameOver :: Bool -> Widget Name
+drawGameOver dead =
+  if dead
+     then padLeftRight 4 $ withAttr gameOverAttr $ str "GAME OVER"
+     else emptyWidget
+
+
+
+drawHelp :: Widget Name
+drawHelp =
+  withBorderStyle BS.unicodeBold
+    $ B.borderWithLabel (str "CONTROLS")
+    $ padTopBottom 100
+    $ hLimit 10
+    $ vBox
+    $ map (uncurry drawKeyInfo)
+      [ ("Left"   , "←")
+      , ("Right"  , "→")
+      , ("up"   , "↑")
+      , ("Down"   , "↓")
+      , ("Restart to level select", "r")
+      , ("Quit"   , "q")
+      ]
+drawKeyInfo :: String -> String -> Widget Name
+drawKeyInfo action keys =
+  padRight Max (padLeft (Pad 1) $ str action)
+    <+> padLeft Max (padRight (Pad 1) $ str keys)
+
+
+
 
 -- draws all of the characters
 drawCharacters :: Game -> [Widget Name]
@@ -191,12 +223,12 @@ interleaveWalls xs (y:ys) = y : concat (zipWith (\x y -> [x]++[y]) xs ys)
 data Cell = Empty0 | Empty1 | Explorer | Wall | NoWall | CMummy
 
 drawCell :: Cell -> Widget Name
-drawCell Explorer = withAttr redBg cw
+drawCell Explorer = withAttr greyBg cw
 drawCell Wall = withAttr blackBg cw
-drawCell NoWall = withAttr whiteBg cw
-drawCell Empty0 = withAttr cyanBg cw
-drawCell Empty1 = withAttr whiteBg cw
-drawCell CMummy = withAttr blueBg cw
+drawCell NoWall = withAttr brown1Bg cw
+drawCell Empty0 = withAttr brownBg cw
+drawCell Empty1 = withAttr brown1Bg cw
+drawCell CMummy = withAttr whiteBg cw
 
 cw :: Widget Name
 cw = str ".."
@@ -210,12 +242,25 @@ theMap = attrMap V.defAttr
     (redBg, V.red `on` V.red),
     (greenBg, V.green `on` V.green),
     (whiteBg, V.white `on` V.white),
-    (blackBg, V.black `on` V.black) ]
+    (blackBg, V.black `on` V.black),
+    (greyBg, V.rgbColor 87 50 13 `on` V.rgbColor 87 50 30),
+    (brown1Bg, V.rgbColor 150 60 0 `on` V.rgbColor 150 60 0),
+    (brownBg, V.rgbColor 204 102 0 `on` V.rgbColor 204 102 0),
+    (brown2Bg, V.rgbColor 255 255 255 `on` V.rgbColor 255 255 255)
+     ]
 
-blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg:: AttrName
+
+
+
+blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg, greyBg, brown1Bg, brown2Bg, brownBg, gameOverAttr :: AttrName
 blueBg = attrName "blueBg"
 cyanBg = attrName "cyanBg"
 redBg = attrName "redBg"
 whiteBg = attrName "whiteBg"
 blackBg = attrName "blackBg"
 greenBg = attrName "greenBg"
+greyBg = attrName "greyBg"
+brownBg = attrName "brownBg"
+brown1Bg = attrName "brown1Bg"
+brown2Bg = attrName "brown2Bg"
+gameOverAttr = attrName "gameOver"

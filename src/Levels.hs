@@ -36,6 +36,10 @@ data Mummy = Mummy
     , _mrct :: Int
     }
 
+
+
+
+
 test :: Game
 test = Game { _explorer = Coord 1 1
                  , _mummies  = [(Mummy {_mloc = Coord 6 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
