@@ -17,6 +17,7 @@ import Levels
 import PickLevel (pickLevel)
 import qualified Brick.Widgets.Border as C
 import qualified Brick.Widgets.Table as C
+import Levels (l5)
 -- Custom event
 data Counter = Counter
 
@@ -46,11 +47,14 @@ handleEvent g (AppEvent Counter)                    =  continue $ counterStep  g
 handleEvent g (VtyEvent (V.EvKey (V.KChar 'q') [])) = halt g
 handleEvent g (VtyEvent (V.EvKey V.KEsc []))        = halt g
 handleEvent g (VtyEvent (V.EvKey (V.KChar 'r') [])) = halt start_Screen
+handleEvent g (VtyEvent (V.EvKey (V.KEnter) []))    = continue $ getNextLevel g
 handleEvent g (VtyEvent (V.EvKey V.KUp []))         = continue $ moveExplorer North g
 handleEvent g (VtyEvent (V.EvKey V.KDown []))       = continue $ moveExplorer South g
 handleEvent g (VtyEvent (V.EvKey V.KRight []))      = continue $ moveExplorer East g
 handleEvent g (VtyEvent (V.EvKey V.KLeft []))       = continue $ moveExplorer West g
 handleEvent g _                                     = continue g
+
+
 
 
 
@@ -154,8 +158,19 @@ validMove d c@(Coord x y) g | d == North && notElem (Coord x y) (_hwalls g) && y
                           | otherwise = c
         where b = _bsize g
 
-
-
+--Returns next level
+getNextLevel:: Game -> Game
+getNextLevel g = case _level g of 
+                  1 -> level_2
+                  2 -> level_3
+                  3 -> level_4
+                  4 -> level_5
+                  5 -> level_6
+                  6 -> level_7
+                  7 -> level_8
+                  8 -> level_9
+                  9 -> level_10
+                  _ -> start_Screen
 {---------- UI CODE ----------}
 
 -- draw the game UI
@@ -165,7 +180,8 @@ drawUI g = case _gameState g of
     Playing -> drawCharacters g ++   [ C.vCenter $ hBox [drawGrid g,
                                       padRight Max $ padLeft (Pad 2) $ drawControls g]] --drawCharacters g ++ [drawGrid g]  ++ [drawControls]
     Lose -> [drawGameOver True]
-    Win -> [drawGrid you_Win]
+    Win -> [ C.vCenter $ hBox [drawGrid you_Win,
+                                      padRight Max $ padLeft (Pad 2) $ drawContinue g]]
 
 
 drawGameOver :: Bool -> Widget Name
@@ -189,8 +205,38 @@ drawControls g =
       , ("Down"   , "↓")
       , ("Level Select", "r")
       , ("Quit"   , "q")
+      , ("Next Level" , "Enter")
       , ("____________________Le", "vel_______________________")
+      , ( "Level: " ++ show (_level g) , checkLevel g)
       ]
+drawContinue :: Game -> Widget Name
+drawContinue g =
+  withBorderStyle BS.unicodeBold
+    $ B.borderWithLabel (str "CONTINUE?")
+    $ padTopBottom 1
+    $ vBox
+    $ map (uncurry drawKeyInfo)
+      [  ("Next Level" , "Enter")
+       , ("Quit" , "q")
+       , ("Level Select" , "r")
+       , ("____________________Le", "vel_______________________")
+       , ( "Level: " ++ show (_level g) , checkLevel g)
+      ]
+
+checkLevel :: Game -> [Char]
+checkLevel g = case _level g of
+                1 -> l1
+                2 -> l2
+                3 -> l3
+                4 -> l4
+                5 -> l5
+                6 -> l6
+                7 -> l7 
+                8 -> l8
+                9 -> l9
+                _ -> l10
+
+
 drawKeyInfo :: String -> String -> Widget Name
 drawKeyInfo action keys =
   padRight Max (padLeft (Pad 1) $ str action)
