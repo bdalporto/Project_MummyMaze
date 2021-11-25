@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE MonoLocalBinds #-}
 module Game where
 
 import Brick
@@ -14,6 +16,7 @@ import qualified Brick.Widgets.Border as B
 import Levels
 import PickLevel (pickLevel)
 import qualified Brick.Widgets.Border as C
+import qualified Brick.Widgets.Table as C
 -- Custom event
 data Counter = Counter
 
@@ -94,23 +97,43 @@ moveMummy c@(Coord c1 c2) g m | mrct <= 0 = m
 
 -- Checks if mummy caught explorer, and returns if game is over
 checkGameState :: Game -> GameState
-checkGameState g = if elem (_explorer g) (map (\m -> (_mloc m)) (_mummies g)) then Lose else Playing
+checkGameState g = if elem (_explorer g) (map _mloc (_mummies g)) || _explorer g == _trap g then Lose else Playing
 
 
 -- Moves the explorer based on direction
 moveExplorer :: MyDirection -> Game -> Game
-moveExplorer d g | _lock g   = g {_explorer = new_coords, _mummies = setMummyCounters g, _lock = False, _gameState = gameState}
+moveExplorer d g | _lock g   = g {_explorer = new_coords,
+                                   _mummies = setMummyCounters g,
+                                   _keys = _keys new_keys, 
+                                   _lock = False,
+                                   _gameState = gameState,
+                                   _keyCount = _keyCount new_keys
+                                   }
                  | otherwise = g
     where
         cur_coords@(Coord x y) = _explorer g
         new_coords = validMove d cur_coords g
         new_game = g {_explorer = new_coords}
         gameState = checkWin new_game
+        new_keys = checkKeys g
 
 
 -- Checks if explorer won the game
 checkWin :: Game -> GameState
-checkWin g = if (_explorer g) == (_exit g) then Win else Playing
+checkWin g = if _explorer g == _exit g && _keyCount g == 0 then Win else Playing
+
+--Checks if the explorer is on a key / if there are any keys left
+checkKeys :: Game -> Game
+checkKeys g = if _explorer g `elem` _keys g
+                then g { _keys = (removeItem (_explorer g) (_keys g)),
+                        _keyCount = _keyCount g - 1}
+              else g
+
+
+removeItem :: Eq Coord => Coord -> [Coord] -> [Coord]
+removeItem _ []                 = []
+removeItem x (y:ys) | x == y    = removeItem x ys
+                    | otherwise = y : removeItem x ys
 
 -- Sets the mummy move counters
 setMummyCounters :: Game -> [Mummy]
@@ -140,28 +163,21 @@ drawUI :: Game -> [Widget Name]
 drawUI g = case _gameState g of
     SelectScreen -> [drawGrid g]
     Playing -> drawCharacters g ++   [ C.vCenter $ hBox [drawGrid g,
-                                      padRight Max $ padLeft (Pad 2) $ drawHelp]] --drawCharacters g ++ [drawGrid g]  ++ [drawHelp]
+                                      padRight Max $ padLeft (Pad 2) $ drawControls g]] --drawCharacters g ++ [drawGrid g]  ++ [drawControls]
     Lose -> [drawGameOver True]
     Win -> [drawGrid you_Win]
-
-{-
-drawUI :: Game -> [Widget Name]
-drawUI g | (_gameState g) == Playing   = (drawCharacters g) ++ [(drawGrid g)] {-$ vLimit 22   ([hBox $ [(drawGrid g)]])      -}
-         | otherwise          = [(drawGrid g)]
--}
-
 
 
 drawGameOver :: Bool -> Widget Name
 drawGameOver dead =
   if dead
-     then padLeftRight 4 $ withAttr gameOverAttr $ str "GAME OVER"
+     then C.center $ withAttr gameOverAttr $ str "GAME OVER"
      else emptyWidget
 
 
 
-drawHelp :: Widget Name
-drawHelp =
+drawControls :: Game -> Widget Name
+drawControls g =
   withBorderStyle BS.unicodeBold
     $ B.borderWithLabel (str "CONTROLS")
     $ padTopBottom 1
@@ -173,6 +189,7 @@ drawHelp =
       , ("Down"   , "↓")
       , ("Level Select", "r")
       , ("Quit"   , "q")
+      , ("____________________Le", "vel_______________________")
       ]
 drawKeyInfo :: String -> String -> Widget Name
 drawKeyInfo action keys =
@@ -181,10 +198,13 @@ drawKeyInfo action keys =
 
 -- draws all of the characters
 drawCharacters :: Game -> [Widget Name]
-drawCharacters g = d_mums ++ [d_exp]
+drawCharacters g = d_mums ++ [d_exp] ++ [d_trap] ++ d_keys
     where
         d_exp = drawCharacter Explorer (_explorer g)
+        d_trap = drawCharacter Trap ( _trap g)
         d_mums = map (drawCharacter CMummy . _mloc) (_mummies g)
+        d_keys = map (drawCharacter Key) (_keys g)
+
 
 -- draws a character given the type and location
 drawCharacter :: Cell -> Coord -> Widget Name
@@ -200,7 +220,7 @@ drawGrid :: Game -> Widget Name
 drawGrid g = vBox rows
   where
     cellSize = 4
-    rep f n xs = map (\ a -> f (replicate n a)) xs
+    rep f n xs = map (f . replicate n) xs
     b = _bsize g
     rows         = interleaveWalls (rep vBox cellSize [hBox $ cellsInRow r | r <- [0..b-1]]) hWalls
     hWalls = [hBox $ interleaveWalls (rep hBox cellSize [drawWall (_hwalls g) (Coord x y) | x <- [0..b]]) bwalls| y <- [0..b]]
@@ -217,18 +237,20 @@ drawGrid g = vBox rows
 
 -- Helper function for drawGrid
 interleaveWalls :: [a] -> [a] -> [a]
-interleaveWalls xs (y:ys) = y : concat (zipWith (\x y -> [x]++[y]) xs ys)
+interleaveWalls xs (y:ys) = y : concat (zipWith (\x y -> x : [y]) xs ys)
 
 
-data Cell = Empty0 | Empty1 | Explorer | Wall | NoWall | CMummy
+data Cell = Empty0 | Empty1 | Explorer | Wall | NoWall | CMummy | Trap | Key
 
 drawCell :: Cell -> Widget Name
 drawCell Explorer = withAttr greyBg cw
+drawCell Trap = withAttr blackBg cw
 drawCell Wall = withAttr blackBg cw
 drawCell NoWall = withAttr brown1Bg cw
 drawCell Empty0 = withAttr brownBg cw
 drawCell Empty1 = withAttr brown1Bg cw
 drawCell CMummy = withAttr whiteBg cw
+drawCell Key = withAttr yellowBg cw
 
 cw :: Widget Name
 cw = str ".."
@@ -246,13 +268,14 @@ theMap = attrMap V.defAttr
     (greyBg, V.rgbColor 87 50 13 `on` V.rgbColor 87 50 30),
     (brown1Bg, V.rgbColor 150 60 0 `on` V.rgbColor 150 60 0),
     (brownBg, V.rgbColor 204 102 0 `on` V.rgbColor 204 102 0),
-    (brown2Bg, V.rgbColor 255 255 255 `on` V.rgbColor 255 255 255)
+    (brown2Bg, V.rgbColor 255 255 255 `on` V.rgbColor 255 255 255) ,
+    (yellowBg, V.yellow `on` V.yellow)
      ]
 
 
 
 
-blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg, greyBg, brown1Bg, brown2Bg, brownBg, gameOverAttr :: AttrName
+blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg, greyBg, brown1Bg, brown2Bg, brownBg, yellowBg, gameOverAttr :: AttrName
 blueBg = attrName "blueBg"
 cyanBg = attrName "cyanBg"
 redBg = attrName "redBg"
@@ -263,4 +286,5 @@ greyBg = attrName "greyBg"
 brownBg = attrName "brownBg"
 brown1Bg = attrName "brown1Bg"
 brown2Bg = attrName "brown2Bg"
+yellowBg = attrName "yellowBg"
 gameOverAttr = attrName "gameOver"

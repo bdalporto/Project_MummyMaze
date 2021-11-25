@@ -17,14 +17,20 @@ import qualified Brick.Widgets.Border as B
 data Game = Game
     { _explorer :: Coord
     , _mummies  :: [Mummy]
+    , _trap :: Coord
+    , _keys :: [Coord]
     , _vwalls    :: [Coord]
     , _hwalls    :: [Coord]
     , _bsize    :: Int
     , _exit     :: Coord
     , _lock    :: Bool
     , _gameState :: GameState
+    , _level :: Int
+    , _keyCount :: Int
     }
-
+-- Level 0 = select screen
+-- Level -1 = Lose
+-- Level -2 = Win
 
 data Coord = Coord { x :: Int, y :: Int} deriving (Eq, Ord, Show)
 
@@ -37,18 +43,19 @@ data Mummy = Mummy
     }
 
 
-
-
-
 test :: Game
 test = Game { _explorer = Coord 1 1
                  , _mummies  = [(Mummy {_mloc = Coord 6 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
+                 , _trap = Coord 2 2
+                 , _keys = [Coord 2 1]
                  , _vwalls    = [Coord 2 3, Coord 2 4, Coord 6 6, Coord 8 2, Coord 8 3, Coord 8 4]
                  , _hwalls    = [Coord 3 0, Coord 2 3, Coord 3 3, Coord 6 6, Coord 7 6]
                  , _bsize    = 10
                  , _exit     = Coord 3 0
                  , _lock     = True
                  , _gameState = Playing
+                 , _level = 1
+                 , _keyCount = 1
                  }
 
 level_1 :: Game
