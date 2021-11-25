@@ -46,7 +46,8 @@ handleEvent :: Game -> BrickEvent Name Counter -> EventM Name (Next Game)
 handleEvent g (AppEvent Counter)                    =  continue $ counterStep  g
 handleEvent g (VtyEvent (V.EvKey (V.KChar 'q') [])) = halt g
 handleEvent g (VtyEvent (V.EvKey V.KEsc []))        = halt g
-handleEvent g (VtyEvent (V.EvKey (V.KChar 'r') [])) = halt start_Screen
+handleEvent g (VtyEvent (V.EvKey (V.KChar 'l') [])) = halt start_Screen
+handleEvent g (VtyEvent (V.EvKey (V.KChar 'r') [])) = continue $ initLevel g
 handleEvent g (VtyEvent (V.EvKey (V.KEnter) []))    = continue $ getNextLevel g
 handleEvent g (VtyEvent (V.EvKey V.KUp []))         = continue $ moveExplorer North g
 handleEvent g (VtyEvent (V.EvKey V.KDown []))       = continue $ moveExplorer South g
@@ -170,19 +171,35 @@ getNextLevel g = case _level g of
                   7 -> level_8
                   8 -> level_9
                   9 -> level_10
-                  _ -> start_Screen
+                  _ -> g{ _gameState = Over}
+--returns same level from start
+initLevel:: Game -> Game
+initLevel g = case _level g of 
+                  1 -> level_1
+                  2 -> level_2
+                  3 -> level_3
+                  4 -> level_4
+                  5 -> level_5
+                  6 -> level_6
+                  7 -> level_7
+                  8 -> level_8
+                  9 -> level_9
+                  10 -> level_10
+                  _ -> g{ _gameState = Over}
 {---------- UI CODE ----------}
 
 -- draw the game UI
 drawUI :: Game -> [Widget Name]
 drawUI g = case _gameState g of
     SelectScreen -> [drawGrid g]
-    Playing -> drawCharacters g ++   [ C.vCenter $ hBox [drawGrid g,
+    Playing -> drawCharacters g ++ [ C.vCenter $ hBox [drawGrid g,
                                       padRight Max $ padLeft (Pad 2) $ drawControls g]] --drawCharacters g ++ [drawGrid g]  ++ [drawControls]
-    Lose -> [drawGameOver True]
+    Lose -> [ C.vCenter $ hBox [drawGrid you_Lose,
+                                      padRight Max $ padLeft (Pad 2) $ drawContinue g]]
     Win -> [ C.vCenter $ hBox [drawGrid you_Win,
                                       padRight Max $ padLeft (Pad 2) $ drawContinue g]]
-
+    Over -> [drawGameOver True]
+-- $ padRight Max $ padLeft (Pad 2) $
 
 drawGameOver :: Bool -> Widget Name
 drawGameOver dead =
@@ -203,7 +220,8 @@ drawControls g =
       , ("Right"  , "→")
       , ("Up"   , "↑")
       , ("Down"   , "↓")
-      , ("Level Select", "r")
+      , ("Level Select", "l")
+      , ("Restart", "r")
       , ("Quit"   , "q")
       , ("Next Level" , "Enter")
       , ("____________________Le", "vel_______________________")
@@ -218,7 +236,8 @@ drawContinue g =
     $ map (uncurry drawKeyInfo)
       [  ("Next Level" , "Enter")
        , ("Quit" , "q")
-       , ("Level Select" , "r")
+       , ("Level Select" , "l")
+       , ("Restart", "r")
        , ("____________________Le", "vel_______________________")
        , ( "Level: " ++ show (_level g) , checkLevel g)
       ]

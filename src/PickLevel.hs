@@ -21,7 +21,7 @@ app = App
 
 ui :: Widget ()
 ui = withBorderStyle BS.unicodeBold
-    $ B.borderWithLabel (str "Mummy Maze")
+    $ B.borderWithLabel (str "MUMMY MAZE")
     $ C.center
     $ str "Choose Level (0-9)"
 
