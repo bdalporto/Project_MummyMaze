@@ -139,14 +139,18 @@ validMove d c@(Coord x y) g | d == North && notElem (Coord x y) (_hwalls g) && y
 drawUI :: Game -> [Widget Name]
 drawUI g = case _gameState g of
     SelectScreen -> [drawGrid g]
-    Playing -> drawCharacters g ++ [drawGrid g]  ++ [drawHelp]
+    Playing -> drawCharacters g ++   [ C.vCenter $ hBox [drawGrid g,
+                                      padRight Max $ padLeft (Pad 2) $ drawHelp]] --drawCharacters g ++ [drawGrid g]  ++ [drawHelp]
     Lose -> [drawGameOver True]
     Win -> [drawGrid you_Win]
+
 {-
 drawUI :: Game -> [Widget Name]
-drawUI g | (_gameState g) == Playing   = (drawCharacters g) ++ [(drawGrid g)]
+drawUI g | (_gameState g) == Playing   = (drawCharacters g) ++ [(drawGrid g)] {-$ vLimit 22   ([hBox $ [(drawGrid g)]])      -}
          | otherwise          = [(drawGrid g)]
 -}
+
+
 
 drawGameOver :: Bool -> Widget Name
 drawGameOver dead =
@@ -160,24 +164,20 @@ drawHelp :: Widget Name
 drawHelp =
   withBorderStyle BS.unicodeBold
     $ B.borderWithLabel (str "CONTROLS")
-    $ padTopBottom 100
-    $ hLimit 10
+    $ padTopBottom 1
     $ vBox
     $ map (uncurry drawKeyInfo)
       [ ("Left"   , "←")
       , ("Right"  , "→")
-      , ("up"   , "↑")
+      , ("Up"   , "↑")
       , ("Down"   , "↓")
-      , ("Restart to level select", "r")
+      , ("Level Select", "r")
       , ("Quit"   , "q")
       ]
 drawKeyInfo :: String -> String -> Widget Name
 drawKeyInfo action keys =
   padRight Max (padLeft (Pad 1) $ str action)
     <+> padLeft Max (padRight (Pad 1) $ str keys)
-
-
-
 
 -- draws all of the characters
 drawCharacters :: Game -> [Widget Name]
