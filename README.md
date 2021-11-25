@@ -29,9 +29,9 @@ We plan on developing this game in stages:
 
 
 ***TODO*** 
-* Traps 
-* Keys -----> Walls / Exit
-* Controls UI
+* Traps  ***DONE***
+* Keys -----> Walls / Exit     ***DONE***
+* Controls UI   ***DONE*** (partially)
     - Display Level name 
 * Dark Rooms
 * Make graphics better
