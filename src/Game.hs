@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE MonoLocalBinds #-}
+{-# OPTIONS_GHC -Wno-missing-fields #-}
 module Game where
 
 import Brick
@@ -17,26 +18,25 @@ import Levels
 import PickLevel (pickLevel)
 import qualified Brick.Widgets.Border as C
 import qualified Brick.Widgets.Table as C
-import Levels (l5)
 -- Custom event
 data Counter = Counter
 
 type Name = ()
 
 choose_Level :: Int -> Game
-choose_Level l = case l of 
+choose_Level l = case l of
                   1 -> level_1
                   2 -> level_2
                   3 -> level_3
                   4 -> level_4
                   5 -> level_5
-                  6 -> level_6 
+                  6 -> level_6
                   7 -> level_7
                   8 -> level_8
-                  9 -> level_9  
+                  9 -> level_9
                   0 -> level_10
                   _ -> Game {_gameState = Over}
- 
+
 
 
 app :: App Game Counter Name
@@ -53,7 +53,7 @@ handleEvent g (VtyEvent (V.EvKey (V.KChar 'q') [])) = halt g
 handleEvent g (VtyEvent (V.EvKey V.KEsc []))        = halt g
 handleEvent g (VtyEvent (V.EvKey (V.KChar 'l') [])) = halt start_Screen
 handleEvent g (VtyEvent (V.EvKey (V.KChar 'r') [])) = continue $ initLevel g
-handleEvent g (VtyEvent (V.EvKey (V.KEnter) []))    = continue $ getNextLevel g
+handleEvent g (VtyEvent (V.EvKey V.KEnter []))    = continue $ getNextLevel g
 handleEvent g (VtyEvent (V.EvKey V.KUp []))         = continue $ moveExplorer North g
 handleEvent g (VtyEvent (V.EvKey V.KDown []))       = continue $ moveExplorer South g
 handleEvent g (VtyEvent (V.EvKey V.KRight []))      = continue $ moveExplorer East g
@@ -107,14 +107,14 @@ moveMummy c@(Coord c1 c2) g m | mrct <= 0 = m
 
 -- Checks if mummy caught explorer, and returns if game is over
 checkGameState :: Game -> GameState
-checkGameState g = if elem (_explorer g) (map _mloc (_mummies g)) || _explorer g == _trap g then Lose else Playing
+checkGameState g = if elem (_explorer g) (map _mloc (_mummies g)) || elem (_explorer g) (_trap g) then Lose else Playing
 
 
 -- Moves the explorer based on direction
 moveExplorer :: MyDirection -> Game -> Game
 moveExplorer d g | _lock g   = g {_explorer = new_coords,
                                    _mummies = setMummyCounters g,
-                                   _keys = _keys new_keys, 
+                                   _keys = _keys new_keys,
                                    _lock = False,
                                    _gameState = gameState,
                                    _keyCount = _keyCount new_keys
@@ -133,12 +133,12 @@ checkWin :: Game -> GameState
 checkWin g = if (px == -1 || py == -1 || px == _bsize g || py == _bsize g) && _keyCount g == 0 then Win else Playing
   where
     p@(Coord px py) = _explorer g
-    e@(Coord ex ey) = _exit g 
+    e@(Coord ex ey) = _exit g
 
 --Checks if the explorer is on a key / if there are any keys left
 checkKeys :: Game -> Game
 checkKeys g = if _explorer g `elem` _keys g
-                then g { _keys = (removeItem (_explorer g) (_keys g)),
+                then g { _keys = removeItem (_explorer g) (_keys g),
                         _keyCount = _keyCount g - 1}
               else g
 
@@ -169,13 +169,13 @@ validMove d c@(Coord x y) g | c == _exit g &&  _keyCount g == 0 && d == North &&
                           | d == East && notElem (Coord (x+1) y) (_vwalls g) && x+1 < b = Coord (x+1) y
                           | d == West && notElem (Coord x y) (_vwalls g) && x-1 >= 0 = Coord (x-1) y
                           | otherwise = c
-        where 
+        where
           b = _bsize g
-          e@(Coord ex ey) = _exit g 
+          e@(Coord ex ey) = _exit g
 
 --Returns next level
 getNextLevel:: Game -> Game
-getNextLevel g = case _level g of 
+getNextLevel g = case _level g of
                   1 -> level_2
                   2 -> level_3
                   3 -> level_4
@@ -188,7 +188,7 @@ getNextLevel g = case _level g of
                   _ -> g{ _gameState = Over}
 --returns same level from start
 initLevel:: Game -> Game
-initLevel g = case _level g of 
+initLevel g = case _level g of
                   1 -> level_1
                   2 -> level_2
                   3 -> level_3
@@ -208,7 +208,7 @@ initLevel g = case _level g of
 drawUI :: Game -> [Widget Name]
 drawUI g = case _gameState g of
     SelectScreen -> [drawGrid g]
-    Playing -> drawCharacters g ++ [ C.vCenter $ hBox [drawGrid g,
+    Playing -> drawCharacters g ++ [hBox [ drawGrid g,
                                       padRight Max $ padLeft (Pad 2) $ drawControls g]] --drawCharacters g ++ [drawGrid g]  ++ [drawControls]
     Lose -> [ C.vCenter $ hBox [drawGrid you_Lose,
                                       padRight Max $ padLeft (Pad 2) $ drawContinue g]]
@@ -258,7 +258,7 @@ drawContinue g =
        , ( "Level: " ++ show (_level g) , checkLevel g)
       ]
 
-checkLevel :: Game -> [Char]
+checkLevel :: Game -> String
 checkLevel g = case _level g of
                 1 -> l1
                 2 -> l2
@@ -266,7 +266,7 @@ checkLevel g = case _level g of
                 4 -> l4
                 5 -> l5
                 6 -> l6
-                7 -> l7 
+                7 -> l7
                 8 -> l8
                 9 -> l9
                 _ -> l10
@@ -279,10 +279,10 @@ drawKeyInfo action keys =
 
 -- draws all of the characters
 drawCharacters :: Game -> [Widget Name]
-drawCharacters g = d_mums ++ [d_exp] ++ [d_trap] ++ d_keys
+drawCharacters g = d_mums ++ [d_exp] ++ d_trap ++ d_keys
     where
         d_exp = drawCharacter Explorer (_explorer g)
-        d_trap = drawCharacter Trap ( _trap g)
+        d_trap = map (drawCharacter Trap) ( _trap g)
         d_mums = map (drawCharacter CMummy . _mloc) (_mummies g)
         d_keys = map (drawCharacter Key) (_keys g)
 
@@ -294,7 +294,8 @@ drawCharacter ctype (Coord x y) = tCell
         cellSize = 4
         rep xs = foldr (\a b -> replicate (cellSize-2) a ++ b) [] xs
         cell = vBox $ rep $ [hBox $ rep [drawCell ctype]]
-        tCell = translateBy (Location (2*x*(cellSize+1)+4 ,y*(cellSize+1)+6)) cell
+        tCell = translateBy (Location (2*x*(cellSize+1)+4 ,y*(cellSize+1)+2)) cell
+        --tCell = translateBy (Location (2*x*(cellSize+1)+4 ,y*(cellSize+1)+6)) cell
 
 -- Draws the board and walls
 drawGrid :: Game -> Widget Name
@@ -303,7 +304,7 @@ drawGrid g = vBox rows
     cellSize = 4
     rep f n xs = map (f . replicate n) xs
     b = _bsize g
-    rows         = interleaveWalls (rep vBox cellSize [hBox $ cellsInRow r | r <- [0..b-1]]) hWalls
+    rows   = interleaveWalls (rep vBox cellSize [hBox $ cellsInRow r | r <- [0..b-1]]) hWalls
     hWalls = [hBox $ interleaveWalls (rep hBox cellSize [drawWall (_hwalls g) (Coord x y) | x <- [0..b]]) bwalls| y <- [0..b]]
     cellsInRow y = interleaveWalls (rep hBox cellSize [drawCoord (Coord x y) | x <- [0..b-1]]) (vwalls y)
     vwalls y = [drawWall (_vwalls g) (Coord x y) | x <- [0..b]]
