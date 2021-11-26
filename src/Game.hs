@@ -18,6 +18,7 @@ import Levels
 import PickLevel (pickLevel)
 import qualified Brick.Widgets.Border as C
 import qualified Brick.Widgets.Table as C
+import qualified Brick.AttrMap as A
 -- Custom event
 data Counter = Counter
 
@@ -208,14 +209,18 @@ initLevel g = case _level g of
 drawUI :: Game -> [Widget Name]
 drawUI g = case _gameState g of
     SelectScreen -> [drawGrid g]
-    Playing -> drawCharacters g ++ [hBox [ drawGrid g,
-                                      padRight Max $ padLeft (Pad 2) $ drawControls g]] --drawCharacters g ++ [drawGrid g]  ++ [drawControls]
-    Lose -> [ C.vCenter $ hBox [drawGrid you_Lose,
-                                      padRight Max $ padLeft (Pad 2) $ drawContinue g]]
-    Win -> [ C.vCenter $ hBox [drawGrid you_Win,
-                                      padRight Max $ padLeft (Pad 2) $ drawContinue g]]
+    Playing -> (map (translateBy (Location (4,2))) (drawCharacters g)) ++ [translateBy (Location (4,2)) $ drawGrid g] 
+                ++ [ translateBy (Location (110,6))$ drawControls g] ++ [drawOuter g] --drawCharacters g ++ [drawGrid g]  ++ [drawControls]
+    Lose -> [translateBy (Location (4,2)) $ drawGrid you_Lose] ++ [ translateBy (Location (110,6))$ drawContinue g]
+                     ++ [drawOuter g]
+    Win -> [translateBy (Location (4,2)) $ drawGrid you_Win] ++ [ translateBy (Location (110,6))$ drawContinue g]
+                     ++ [drawOuter g]
     Over -> [drawGameOver True]
 -- $ padRight Max $ padLeft (Pad 2) $
+
+drawOuter:: Game -> Widget Name
+drawOuter g = vBox [hBox $ [drawCell Trap | x <-[0..b*4+45] ] | y <-[0..b*4+16]]
+  where b = _bsize g
 
 drawGameOver :: Bool -> Widget Name
 drawGameOver dead =
@@ -226,12 +231,12 @@ drawGameOver dead =
 
 
 drawControls :: Game -> Widget Name
-drawControls g =
-  withBorderStyle BS.unicodeBold
+drawControls g =  withAttr brnbrnBg $ hLimit 50 $
+    withBorderStyle BS.unicodeBold
     $ B.borderWithLabel (str "CONTROLS")
     $ padTopBottom 1
     $ vBox
-    $ map (uncurry drawKeyInfo)
+    $ map (\x->withAttr brnbrnBg (uncurry drawKeyInfo x))
       [ ("Left"   , "←")
       , ("Right"  , "→")
       , ("Up"   , "↑")
@@ -244,12 +249,12 @@ drawControls g =
       , ( "Level: " ++ show (_level g) , checkLevel g)
       ]
 drawContinue :: Game -> Widget Name
-drawContinue g =
+drawContinue g = withAttr brnbrnBg $ hLimit 50 $
   withBorderStyle BS.unicodeBold
     $ B.borderWithLabel (str "CONTINUE?")
     $ padTopBottom 1
     $ vBox
-    $ map (uncurry drawKeyInfo)
+    $ map (\x->withAttr brnbrnBg (uncurry drawKeyInfo x))
       [  ("Next Level" , "Enter")
        , ("Quit" , "q")
        , ("Level Select" , "l")
@@ -273,7 +278,7 @@ checkLevel g = case _level g of
 
 
 drawKeyInfo :: String -> String -> Widget Name
-drawKeyInfo action keys =
+drawKeyInfo action keys = 
   padRight Max (padLeft (Pad 1) $ str action)
     <+> padLeft Max (padRight (Pad 1) $ str keys)
 
@@ -337,7 +342,6 @@ drawCell Key = withAttr yellowBg cw
 cw :: Widget Name
 cw = str ".."
 
-
 -- attributes map
 theMap :: AttrMap
 theMap = attrMap V.defAttr
@@ -351,13 +355,14 @@ theMap = attrMap V.defAttr
     (brown1Bg, V.rgbColor 150 60 0 `on` V.rgbColor 150 60 0),
     (brownBg, V.rgbColor 204 102 0 `on` V.rgbColor 204 102 0),
     (brown2Bg, V.rgbColor 255 255 255 `on` V.rgbColor 255 255 255) ,
-    (yellowBg, V.yellow `on` V.yellow)
+    (brnbrnBg, V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13), -- for hot keys box
+    (B.borderAttr,      V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13) -- for hot keys box
      ]
 
 
 
 
-blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg, greyBg, brown1Bg, brown2Bg, brownBg, yellowBg, gameOverAttr :: AttrName
+blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg, greyBg, brown1Bg, brown2Bg, brownBg, yellowBg, gameOverAttr, brnbrnBg :: AttrName
 blueBg = attrName "blueBg"
 cyanBg = attrName "cyanBg"
 redBg = attrName "redBg"
@@ -370,3 +375,4 @@ brown1Bg = attrName "brown1Bg"
 brown2Bg = attrName "brown2Bg"
 yellowBg = attrName "yellowBg"
 gameOverAttr = attrName "gameOver"
+brnbrnBg = attrName "brnbrnBg"
