@@ -24,14 +24,19 @@ data Counter = Counter
 type Name = ()
 
 choose_Level :: Int -> Game
-choose_Level l
-   | l == 1  = Levels.test
-   | l == 2  = you_Win
-   | l == 3  = you_Lose
-   | l == 4  = test
-   | l == 5  = you_Win
-   | otherwise = you_Lose
-
+choose_Level l = case l of 
+                  1 -> level_1
+                  2 -> level_2
+                  3 -> level_3
+                  4 -> level_4
+                  5 -> level_5
+                  6 -> level_6 
+                  7 -> level_7
+                  8 -> level_8
+                  9 -> level_9  
+                  0 -> level_10
+                  _ -> Game {_gameState = Over}
+ 
 
 
 app :: App Game Counter Name
@@ -186,6 +191,8 @@ initLevel g = case _level g of
                   9 -> level_9
                   10 -> level_10
                   _ -> g{ _gameState = Over}
+
+
 {---------- UI CODE ----------}
 
 -- draw the game UI
@@ -204,7 +211,7 @@ drawUI g = case _gameState g of
 drawGameOver :: Bool -> Widget Name
 drawGameOver dead =
   if dead
-     then C.center $ withAttr gameOverAttr $ str "GAME OVER"
+     then C.center $ withAttr gameOverAttr $ str ("GAME OVER\ngood job!\n\n\n\n\n" ++ smiley_face)
      else emptyWidget
 
 
@@ -224,7 +231,7 @@ drawControls g =
       , ("Restart", "r")
       , ("Quit"   , "q")
       , ("Next Level" , "Enter")
-      , ("____________________Le", "vel_______________________")
+      , ("____________________________________________________________________________________", "___________________________________________________________________________________________")
       , ( "Level: " ++ show (_level g) , checkLevel g)
       ]
 drawContinue :: Game -> Widget Name
@@ -238,7 +245,7 @@ drawContinue g =
        , ("Quit" , "q")
        , ("Level Select" , "l")
        , ("Restart", "r")
-       , ("____________________Le", "vel_______________________")
+       , ("____________________________________________________________________________________", "___________________________________________________________________________________________")
        , ( "Level: " ++ show (_level g) , checkLevel g)
       ]
 
