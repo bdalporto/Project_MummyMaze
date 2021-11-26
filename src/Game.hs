@@ -355,6 +355,7 @@ theMap = attrMap V.defAttr
     (brown1Bg, V.rgbColor 150 60 0 `on` V.rgbColor 150 60 0),
     (brownBg, V.rgbColor 204 102 0 `on` V.rgbColor 204 102 0),
     (brown2Bg, V.rgbColor 255 255 255 `on` V.rgbColor 255 255 255) ,
+    (yellowBg, V.yellow `on` V.yellow),
     (brnbrnBg, V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13), -- for hot keys box
     (B.borderAttr,      V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13) -- for hot keys box
      ]
