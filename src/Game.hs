@@ -130,7 +130,10 @@ moveExplorer d g | _lock g   = g {_explorer = new_coords,
 
 -- Checks if explorer won the game
 checkWin :: Game -> GameState
-checkWin g = if _explorer g == _exit g && _keyCount g == 0 then Win else Playing
+checkWin g = if (px == -1 || py == -1 || px == _bsize g || py == _bsize g) && _keyCount g == 0 then Win else Playing
+  where
+    p@(Coord px py) = _explorer g
+    e@(Coord ex ey) = _exit g 
 
 --Checks if the explorer is on a key / if there are any keys left
 checkKeys :: Game -> Game
@@ -157,12 +160,18 @@ setMummyCounter m = m {_mrct = mct}
 
 -- Checks if a move is valid given: direction, current coordinates, game
 validMove :: MyDirection -> Coord -> Game -> Coord
-validMove d c@(Coord x y) g | d == North && notElem (Coord x y) (_hwalls g) && y-1 >= 0 = Coord x (y-1)
+validMove d c@(Coord x y) g | c == _exit g &&  _keyCount g == 0 && d == North && elem c (_hwalls g) && y == 0 = Coord x (y-1)
+                          | c == _exit g &&  _keyCount g == 0 && d == South && elem c (_hwalls g) && y /= 0 = Coord x (y+1)
+                          | c == _exit g &&  _keyCount g == 0 && d == East && elem c (_vwalls g) && x /= 0 = Coord (x+1) y
+                          | c == _exit g &&  _keyCount g == 0 && d == West && elem c (_vwalls g) && x == 0 = Coord (x-1) y
+                          | d == North && notElem (Coord x y) (_hwalls g) && y-1 >= 0 = Coord x (y-1)
                           | d == South && notElem (Coord x (y+1)) (_hwalls g) && y+1 < b = Coord x (y+1)
                           | d == East && notElem (Coord (x+1) y) (_vwalls g) && x+1 < b = Coord (x+1) y
                           | d == West && notElem (Coord x y) (_vwalls g) && x-1 >= 0 = Coord (x-1) y
                           | otherwise = c
-        where b = _bsize g
+        where 
+          b = _bsize g
+          e@(Coord ex ey) = _exit g 
 
 --Returns next level
 getNextLevel:: Game -> Game
@@ -285,7 +294,7 @@ drawCharacter ctype (Coord x y) = tCell
         cellSize = 4
         rep xs = foldr (\a b -> replicate (cellSize-2) a ++ b) [] xs
         cell = vBox $ rep $ [hBox $ rep [drawCell ctype]]
-        tCell = translateBy (Location (2*x*(cellSize+1)+4 ,y*(cellSize+1)+2)) cell
+        tCell = translateBy (Location (2*x*(cellSize+1)+4 ,y*(cellSize+1)+6)) cell
 
 -- Draws the board and walls
 drawGrid :: Game -> Widget Name
