@@ -58,18 +58,18 @@ test = Game { _explorer = Coord 1 1
                  , _keyCount = 1
                  }
 level_1 :: Game
-level_1 = Game { _explorer = Coord 1 1
-                 , _mummies  = [(Mummy {_mloc = Coord 6 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
-                 , _trap = Coord 2 2
-                 , _keys = [Coord 2 1]
-                 , _vwalls    = [Coord 0 3, Coord 2 3, Coord 2 4, Coord 6 6, Coord 8 2, Coord 8 3, Coord 8 4]
-                 , _hwalls    = [Coord 2 3, Coord 3 3, Coord 6 6, Coord 7 6]
+level_1 = Game { _explorer = Coord 5 5
+                 , _mummies  = [(Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
+                 , _trap = Coord 10 10
+                 , _keys = []
+                 , _vwalls    = [Coord 8 2, Coord 8 3, Coord 8 4]
+                 , _hwalls    = [Coord 2 3,Coord 3 0, Coord 3 3, Coord 6 6, Coord 7 6]
                  , _bsize    = 10
-                 , _exit     = Coord 0 3
+                 , _exit     = Coord 3 0
                  , _lock     = True
                  , _gameState = Playing
                  , _level = 1
-                 , _keyCount = 1
+                 , _keyCount = 0
                  } 
 
 level_2 :: Game
@@ -101,12 +101,12 @@ level_3 = Game { _explorer = Coord 2 1
                  , _keyCount = 1
                  }
 level_4 :: Game
-level_4 = Game { _explorer = Coord 1 1
-                 , _mummies  = [(Mummy {_mloc = Coord 6 7, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 4, _mct = 2, _mrct = 0})]
+level_4 = Game {_explorer = Coord 1 1
+                 , _mummies  = [(Mummy {_mloc = Coord 6 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
                  , _trap = Coord 2 2
                  , _keys = [Coord 2 1]
                  , _vwalls    = [Coord 2 3, Coord 2 4, Coord 6 6, Coord 8 2, Coord 8 3, Coord 8 4]
-                 , _hwalls    = [Coord 3 0, Coord 2 3, Coord 3 3, Coord 6 6, Coord 7 6]
+                 , _hwalls    = [Coord 2 3,Coord 3 0, Coord 3 3, Coord 6 6, Coord 7 6]
                  , _bsize    = 10
                  , _exit     = Coord 3 0
                  , _lock     = True
