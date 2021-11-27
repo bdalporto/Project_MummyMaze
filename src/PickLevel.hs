@@ -3,12 +3,14 @@ module PickLevel
   ) where
 
 import System.Exit (exitSuccess)
-
+import Levels
 import Brick
 import qualified Brick.Widgets.Border as B
 import qualified Brick.Widgets.Border.Style as BS
 import qualified Brick.Widgets.Center as C
 import qualified Graphics.Vty as V
+
+
 
 app :: App (Maybe Int) e ()
 app = App
@@ -20,11 +22,10 @@ app = App
   }
 
 ui :: Widget ()
-ui = withBorderStyle BS.unicodeBold
-    $ B.borderWithLabel (str "")
+ui = withAttr brnbrnBg  $ withBorderStyle BS.unicodeBold  
+    $ B.borderWithLabel (str "") $ withAttr brnbrnBg
     $ C.center
-    $ str "WELCOME TO THE MUMMY MAZE!\nENTER IF YOU DARE!\nChoose Level (1 - 10(0))"
-
+      $ str "WELCOME TO THE MUMMY MAZE!\nENTER IF YOU DARE!\nChoose Level (1 - 10(0))"
 
 
 

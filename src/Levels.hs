@@ -92,7 +92,7 @@ level_3 = Game { _explorer = Coord 2 1
                  , _trap = [Coord 2 2 , Coord 4 4]
                  , _keys = [Coord 4 2]
                  , _vwalls    = [Coord 0 7, Coord 2 2, Coord 3 2,Coord 5 1, Coord 5 4, Coord 5 5, Coord 6 1, Coord 6 2, Coord 6 3, Coord 6 4]
-                 , _hwalls    = [Coord 0 1, Coord 1 1,Coord 2 1, Coord 6 1, Coord 5 5, Coord 7 6, Coord 8 6, Coord 1 8]
+                 , _hwalls    = [Coord 0 1, Coord 1 1,Coord 2 1, Coord 6 1, Coord 5 5, Coord 7 6, Coord 8 6]
                  , _bsize    = 10
                  , _exit     = Coord 0 7
                  , _lock     = True
@@ -270,7 +270,7 @@ l10 = "          _\n" ++ l9
 
 
 smiley_face :: [Char]
-smiley_face = "   - - - - - - -\n" ++
+smiley_face = " - - - - - - -\n" ++
               "-               -\n" ++
               "-   ◍      ◍   -\n" ++
               "-               -\n" ++
@@ -278,3 +278,37 @@ smiley_face = "   - - - - - - -\n" ++
               "-  _        _   -\n" ++
               "-    _ _ _ _    -\n" ++
                 "- - - - - - -"
+
+
+-- attributes map
+theMap :: AttrMap
+theMap = attrMap V.defAttr
+  [ (blueBg, V.blue `on` V.blue),
+    (cyanBg, V.cyan `on` V.cyan),
+    (redBg, V.red `on` V.red),
+    (greenBg, V.green `on` V.green),
+    (whiteBg, V.white `on` V.white),
+    (blackBg, V.black `on` V.black),
+    (greyBg, V.rgbColor 87 50 13 `on` V.rgbColor 87 50 30),
+    (brown1Bg, V.rgbColor 150 60 0 `on` V.rgbColor 150 60 0),
+    (brownBg, V.rgbColor 204 102 0 `on` V.rgbColor 204 102 0),
+    (brown2Bg, V.rgbColor 255 255 255 `on` V.rgbColor 255 255 255) ,
+    (yellowBg, V.yellow `on` V.yellow),
+    (brnbrnBg, V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13), -- for hot keys box
+    (B.borderAttr,      V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13) -- for hot keys box
+     ]
+
+
+blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg, greyBg, brown1Bg, brown2Bg, brownBg, yellowBg, brnbrnBg :: AttrName
+blueBg = attrName "blueBg"
+cyanBg = attrName "cyanBg"
+redBg = attrName "redBg"
+whiteBg = attrName "whiteBg"
+blackBg = attrName "blackBg"
+greenBg = attrName "greenBg"
+greyBg = attrName "greyBg"
+brownBg = attrName "brownBg"
+brown1Bg = attrName "brown1Bg"
+brown2Bg = attrName "brown2Bg"
+yellowBg = attrName "yellowBg"
+brnbrnBg = attrName "brnbrnBg"

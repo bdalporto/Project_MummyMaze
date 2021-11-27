@@ -225,7 +225,7 @@ drawOuter g = vBox [hBox $ [drawCell Trap | x <-[0..b*4+45] ] | y <-[0..b*4+16]]
 drawGameOver :: Bool -> Widget Name
 drawGameOver dead =
   if dead
-     then C.center $ withAttr gameOverAttr $ str ("GAME OVER\ngood job!\n\n\n\n\n" ++ smiley_face)
+     then C.center  $ str ("GAME OVER\ngood job!\n\n\n\n\n" ++ smiley_face)
      else emptyWidget
 
 
@@ -342,38 +342,5 @@ drawCell Key = withAttr yellowBg cw
 cw :: Widget Name
 cw = str ".."
 
--- attributes map
-theMap :: AttrMap
-theMap = attrMap V.defAttr
-  [ (blueBg, V.blue `on` V.blue),
-    (cyanBg, V.cyan `on` V.cyan),
-    (redBg, V.red `on` V.red),
-    (greenBg, V.green `on` V.green),
-    (whiteBg, V.white `on` V.white),
-    (blackBg, V.black `on` V.black),
-    (greyBg, V.rgbColor 87 50 13 `on` V.rgbColor 87 50 30),
-    (brown1Bg, V.rgbColor 150 60 0 `on` V.rgbColor 150 60 0),
-    (brownBg, V.rgbColor 204 102 0 `on` V.rgbColor 204 102 0),
-    (brown2Bg, V.rgbColor 255 255 255 `on` V.rgbColor 255 255 255) ,
-    (yellowBg, V.yellow `on` V.yellow),
-    (brnbrnBg, V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13), -- for hot keys box
-    (B.borderAttr,      V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13) -- for hot keys box
-     ]
 
 
-
-
-blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg, greyBg, brown1Bg, brown2Bg, brownBg, yellowBg, gameOverAttr, brnbrnBg :: AttrName
-blueBg = attrName "blueBg"
-cyanBg = attrName "cyanBg"
-redBg = attrName "redBg"
-whiteBg = attrName "whiteBg"
-blackBg = attrName "blackBg"
-greenBg = attrName "greenBg"
-greyBg = attrName "greyBg"
-brownBg = attrName "brownBg"
-brown1Bg = attrName "brown1Bg"
-brown2Bg = attrName "brown2Bg"
-yellowBg = attrName "yellowBg"
-gameOverAttr = attrName "gameOver"
-brnbrnBg = attrName "brnbrnBg"

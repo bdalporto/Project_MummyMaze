@@ -15,12 +15,13 @@ import qualified Brick.Widgets.Border as B
 import PickLevel (pickLevel)
 import Game
 import Levels
-
+import Instructions (instructions)
 
 main :: IO ()
 main = do
     eventChan <- newBChan 10
     l <- pickLevel
+    guacamole <- instructions
     forkIO $ forever $ do
         writeBChan eventChan Counter
         threadDelay 500000 -- decides how fast your game moves

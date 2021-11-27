@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 33a24057bf6896d5b925cd945bc8d0cfa7e81659f67f36ebeb00af8ed92be6e5
+-- hash: d1428ccccc3cdd1e9ea3aadef1f62be2c1372f6820a63e0d32e9412d4ddccab3
 
 name:           mum-game
 version:        0.1.0.0
@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Game
+      Instructions
       Levels
       Lib
       PickLevel
