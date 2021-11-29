@@ -31,20 +31,20 @@ We plan on developing this game in stages:
 ****DONE**** 
 * Traps                                  ***DONE***
 * Keys -----> Walls / Exit               ***DONE***
-* Controls UI                            ***DONE*** (partially)
+* Controls UI                            ***DONE*** 
     - Display Level name                 ***DONE!***
 * Dark Rooms
-* Make graphics better
+* Make graphics better                   ***DONE!***
 
 
 
 ***TO-DO***
-* Open fixed size terminal
+* Open fixed size terminal         ***Another Solution has been implemented***
 * Different Mummies
-* Instructions Page
+* Instructions Page                ***DONE***
 * Character Legend (In instruction page?)
-* Border
-* Make all levels
+* Border                           ***Different solution implemented***
+* Make all levels                  ***Partially done****
 
 
 
