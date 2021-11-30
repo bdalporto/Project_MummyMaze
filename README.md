@@ -27,26 +27,29 @@ We plan on developing this game in stages:
 ![Alt text](https://bigheadghost.github.io/img/2014/mummy_maze_with_longest_solution.jpg "Optional title")
 
 
+# UPDATES (Checkpoint 2)
+####
+As of 11/29, we've implemented all of the features for a solid baseline of our game. We have a level selection screen, instructions, and the core logic and graphics of the game. We've implemented some additional features that we originally considered unnecessary, but that would make the game more difficult / fun (see below). It has not all been an easy process, as there have been some frustrations with the UI and features available for implementing graphical features. Given the available tools of th ebrick library, we believe we have a great looking and functional game. We do not expect to use any additional libraries outside of those already implemented -- mainly Brick, Vty, Control, and Data.
 
-****DONE**** 
-* Traps                                  ***DONE***
-* Keys -----> Walls / Exit               ***DONE***
-* Controls UI                            ***DONE*** 
-    - Display Level name                 ***DONE!***
-* Dark Rooms
-* Make graphics better                   ***DONE!***
-
-
+***Implemented add-ons in addition to base game***
+* Traps                             
+* Keys -----> Walls / Exit             
+* Controls UI                           
+    - Display Level name                 
+* Instructions Page                
+* Make graphics better             
+* Open fixed size terminal         ***Different solution implemented***
+* Border                           ***Different solution implemented***
 
 ***TO-DO***
-* Open fixed size terminal         ***Another Solution has been implemented***
-* Different Mummies
-* Instructions Page                ***DONE***
+* Dark Rooms ***Need to complete***
+* Different Mummies ***need to complete***
+* Make all levels   ***Partially done***
 * Character Legend (In instruction page?)
-* Border                           ***Different solution implemented***
-* Make all levels                  ***Partially done****
 
+Here's a little sneak peak!
 
+![image](https://user-images.githubusercontent.com/91349464/143976949-938f3c28-27b9-4120-acf7-1d733c66c898.png)
 
 
 ​​
