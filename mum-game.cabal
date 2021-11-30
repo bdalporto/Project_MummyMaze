@@ -60,6 +60,7 @@ executable mum-game-exe
     , parsec
     , transformers
     , vty
+    , process
   default-language: Haskell2010
 
 test-suite mum-game-test

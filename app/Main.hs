@@ -1,5 +1,7 @@
 module Main where
 
+import System.Process
+
 import Brick
 import Brick.BChan
 import qualified Graphics.Vty as V
@@ -19,6 +21,7 @@ import Instructions (instructions)
 
 main :: IO ()
 main = do
+    callCommand "printf '\\e[8;56;165t'"
     eventChan <- newBChan 10
     l <- pickLevel
     guacamole <- instructions
