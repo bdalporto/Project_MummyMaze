@@ -1,5 +1,5 @@
 # CSE 230 FA21 Project Proposal
-#### Group Members:  Brandon Dalporto, Sarah Ekaireb
+#### Group Members:  Brandon DalPorto, Sarah Ekaireb
 
 Mummy Maze Deluxe Game Remake
 
