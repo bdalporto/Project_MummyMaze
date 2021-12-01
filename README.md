@@ -38,7 +38,7 @@ As of 11/29, we've implemented all of the features for a solid baseline of our g
     - Display Level name                 
 * Instructions Page                
 * Make graphics better             
-* Open fixed size terminal         ***Different solution implemented***
+* Open fixed size terminal         ***IMPLEMENTED***
 * Border                           ***Different solution implemented***
 
 ***TO-DO***
