@@ -12,7 +12,7 @@ import qualified Graphics.Vty as V
 
 
 
-app :: App (Maybe String) e ()
+app :: App (Maybe Int) e ()
 app = App
   { appDraw         = const [ui]
   , appHandleEvent  = handleEvent
@@ -30,17 +30,20 @@ ui = withAttr brnbrnBg  $ withBorderStyle BS.unicodeBold
              "Take caution of the mummies! There may be more than one....\n" ++
              "Scattered around the pyramid you may find golden keys, pick them up! Or else you cannot escape.\n" ++
              "Beware of traps, they were poorly designed.... they're just black holes in the ground (we're on a budget here)\n\n"++
-             "PRESS ANY KEY TO CONTINUE\t\t\t\t\t\t\t"++
-             "or q if you're too scared...")
+             "<Select a level 1-10(0)>\t\t\t\t\t\t\t"++
+             "or quit if you're too scared...")
 
 
-
-handleEvent :: Maybe String  -> BrickEvent () e -> EventM () (Next (Maybe String))
+handleEvent :: Maybe Int -> BrickEvent () e -> EventM () (Next (Maybe Int))
 handleEvent n (VtyEvent (V.EvKey V.KEsc        _)) = halt n
 handleEvent n (VtyEvent (V.EvKey (V.KChar 'q') _)) = halt n
 handleEvent n (VtyEvent (V.EvKey (V.KChar 'Q') _)) = halt n
-handleEvent n (VtyEvent (V.EvKey (V.KChar d) []))    =  halt $ Just (read [d])
+handleEvent n (VtyEvent (V.EvKey (V.KChar d) [])) =
+  if d `elem` ['0' .. '9']
+  then halt $ Just (read [d])
+  else continue n
 handleEvent n _ = continue n
 
-instructions :: IO String
+
+instructions :: IO Int
 instructions = defaultMain app Nothing >>= maybe exitSuccess return
