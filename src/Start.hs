@@ -18,7 +18,7 @@ app = App
   { appDraw         = const [ui]
   , appHandleEvent  = handleEvent
   , appStartEvent   = return
-  , appAttrMap      = const $ attrMap V.defAttr []
+  , appAttrMap      = const theMap
   , appChooseCursor = neverShowCursor
   }
 

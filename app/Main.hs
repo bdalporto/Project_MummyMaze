@@ -22,7 +22,7 @@ import Instructions (instructions)
 
 main :: IO ()
 main = do
-    callCommand "printf '\\e[8;56;165t'"
+    callCommand "printf '\\e[8;60;165t'"
     eventChan <- newBChan 10
     guacamole <- start
     l <- instructions

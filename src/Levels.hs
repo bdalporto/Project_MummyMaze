@@ -277,7 +277,16 @@ smiley_face = " - - - - - - -\n" ++
               "-        ^      -\n" ++
               "-  _        _   -\n" ++
               "-    _ _ _ _    -\n" ++
+              "-               -\n" ++
                 "- - - - - - -"
+
+
+t1,t2,t3,t4,t5 :: [Int]
+t1 = [0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0]
+t2 = [0,1,1,0,0,0,1,1,0,0,1,0,0,0,0,1,0,0,1,1,0,0,0,1,1,0,0,1,1,0,0,0,1,1,0,0,0,1,0,1,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0]
+t3 = [0,1,0,1,0,1,0,1,0,0,1,0,0,0,0,1,0,0,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,1,1,0]
+t4 = [0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0]
+t5 = [0,1,0,0,1,0,0,1,0,0,0,1,1,1,1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,1,0,0,1,1,1,1,1,0,0,1,1,1,1,1,1,0]
 
 
 -- attributes map
@@ -294,12 +303,13 @@ theMap = attrMap V.defAttr
     (brownBg, V.rgbColor 204 102 0 `on` V.rgbColor 204 102 0),
     (brown2Bg, V.rgbColor 255 255 255 `on` V.rgbColor 255 255 255) ,
     (yellowBg, V.yellow `on` V.yellow),
-    (brnbrnBg, V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13), -- for hot keys box
-    (B.borderAttr,      V.rgbColor 204 102 0 `on` V.rgbColor 87 50 13) -- for hot keys box
+    (outerBg, V.rgbColor 240 200 120 `on` V.rgbColor 240 200 120),
+    (brnbrnBg, V.rgbColor 90 30 0 `on` V.rgbColor 240 200 120), -- for hot keys box
+    (B.borderAttr,      V.rgbColor 90 30 0 `on` V.rgbColor 240 200 120) -- for hot keys box
      ]
 
 
-blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg, greyBg, brown1Bg, brown2Bg, brownBg, yellowBg, brnbrnBg :: AttrName
+blueBg, redBg, cyanBg, whiteBg, blackBg, greenBg, greyBg, brown1Bg, brown2Bg, brownBg, yellowBg, brnbrnBg, outerBg :: AttrName
 blueBg = attrName "blueBg"
 cyanBg = attrName "cyanBg"
 redBg = attrName "redBg"
@@ -312,3 +322,4 @@ brown1Bg = attrName "brown1Bg"
 brown2Bg = attrName "brown2Bg"
 yellowBg = attrName "yellowBg"
 brnbrnBg = attrName "brnbrnBg"
+outerBg = attrName "outerBg"

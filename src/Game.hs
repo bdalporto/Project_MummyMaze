@@ -209,26 +209,57 @@ initLevel g = case _level g of
 drawUI :: Game -> [Widget Name]
 drawUI g = case _gameState g of
     SelectScreen -> [drawGrid g]
-    Playing -> (map (translateBy (Location (4,2))) (drawCharacters g)) ++ [translateBy (Location (4,2)) $ drawGrid g] 
-                ++ [ translateBy (Location (110,6))$ drawControls g] ++ [drawOuter g] --drawCharacters g ++ [drawGrid g]  ++ [drawControls]
-    Lose -> [translateBy (Location (4,2)) $ drawGrid you_Lose] ++ [ translateBy (Location (110,6))$ drawContinue g]
-                     ++ [drawOuter g]
-    Win -> [translateBy (Location (4,2)) $ drawGrid you_Win] ++ [ translateBy (Location (110,6))$ drawContinue g]
-                     ++ [drawOuter g]
+    Playing -> (map (translateBy (Location (4,8))) (drawCharacters g)) 
+                ++ [translateBy (Location (4,8)) $ drawGrid g] 
+                ++ [translateBy (Location (110,8))$ drawLegend g] 
+                ++ [translateBy (Location (110,25))$ drawControls g]
+                ++ [translateBy (Location (1,1))$ drawTitle g]
+                ++ [drawOuter g] --drawCharacters g ++ [drawGrid g]  ++ [drawControls]
+    Lose -> [translateBy (Location (4,8)) $ drawGrid you_Lose] 
+             ++ [ translateBy (Location (110,8))$ drawContinue g]
+             ++ [translateBy (Location (1,1))$ drawTitle g]
+             ++ [drawOuter g]
+    Win -> [translateBy (Location (4,8)) $ drawGrid you_Win] 
+            ++ [ translateBy (Location (110,8))$ drawContinue g]
+            ++ [translateBy (Location (1,1))$ drawTitle g]
+            ++ [drawOuter g]
     Over -> [drawGameOver True]
--- $ padRight Max $ padLeft (Pad 2) $
+
+
+drawTitle:: Game -> Widget Name
+drawTitle _ = vBox $ map (\c -> g c) [t1,t2,t3,t4,t5]
+    where g c = hBox $ map (\e -> h e) c
+          h 1 = drawCell Wall
+          h 0 = drawCell Outer
+
 
 drawOuter:: Game -> Widget Name
-drawOuter g = vBox [hBox $ [drawCell Trap | x <-[0..b*4+45] ] | y <-[0..b*4+16]]
+drawOuter g = vBox [hBox $ [drawCell Outer | x <-[0..b*4+45] ] | y <-[0..b*4+22]]
   where b = _bsize g
 
 drawGameOver :: Bool -> Widget Name
 drawGameOver dead =
   if dead
-     then C.center  $ str ("GAME OVER\ngood job!\n\n\n\n\n" ++ smiley_face)
+     then withAttr brnbrnBg $ C.center  $ str ("GAME OVER\ngood job!\n\n\n\n\n" ++ smiley_face)
      else emptyWidget
 
+drawLegend :: Game -> Widget Name
+drawLegend g =  withAttr brnbrnBg $ hLimit 50 $
+    withBorderStyle BS.unicodeBold
+    $ B.borderWithLabel (str "LEGEND")
+    $ padTopBottom 1
+    $ vBox
+    $ map (\x-> padTopBottom 1 (withAttr brnbrnBg (uncurry drawLegendInfo x)))
+      [ ("Explorer"   , Explorer),
+        ("2-move Mummy"   , CMummy),
+        ("Trap", Trap),
+        ("Key", Key)
+      ]
 
+drawLegendInfo :: String -> Cell -> Widget Name
+drawLegendInfo action keys = 
+  padRight Max (padLeft (Pad 1) $ str action)
+    <+> padLeft Max (padRight (Pad 1) $ drawCell keys)
 
 drawControls :: Game -> Widget Name
 drawControls g =  withAttr brnbrnBg $ hLimit 50 $
@@ -248,6 +279,7 @@ drawControls g =  withAttr brnbrnBg $ hLimit 50 $
       , ("____________________________________________________________________________________", "___________________________________________________________________________________________")
       , ( "Level: " ++ show (_level g) , checkLevel g)
       ]
+
 drawContinue :: Game -> Widget Name
 drawContinue g = withAttr brnbrnBg $ hLimit 50 $
   withBorderStyle BS.unicodeBold
@@ -327,7 +359,7 @@ interleaveWalls :: [a] -> [a] -> [a]
 interleaveWalls xs (y:ys) = y : concat (zipWith (\x y -> x : [y]) xs ys)
 
 
-data Cell = Empty0 | Empty1 | Explorer | Wall | NoWall | CMummy | Trap | Key
+data Cell = Empty0 | Empty1 | Explorer | Wall | NoWall | CMummy | Trap | Key | Outer
 
 drawCell :: Cell -> Widget Name
 drawCell Explorer = withAttr greyBg cw
@@ -338,6 +370,7 @@ drawCell Empty0 = withAttr brownBg cw
 drawCell Empty1 = withAttr brown1Bg cw
 drawCell CMummy = withAttr whiteBg cw
 drawCell Key = withAttr yellowBg cw
+drawCell Outer = withAttr outerBg cw
 
 cw :: Widget Name
 cw = str ".."
