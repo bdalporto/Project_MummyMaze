@@ -26,7 +26,7 @@ ui :: Widget ()
 ui = withAttr brnbrnBg  $ withBorderStyle BS.unicodeBold  
     $ B.borderWithLabel (str "") $ withAttr brnbrnBg
     $ C.center
-      $ str "WELCOME TO THE MUMMY MAZE!\nENTER IF YOU DARE!\nChoose Level <Press Enter to Continue>\n\n<Press q to leave>.... with your life!"
+      $ str "WELCOME TO THE MUMMY MAZE!\nENTER IF YOU DARE!\n <Press Enter to Continue>\n\n<Press q to leave>.... with your life!"
 
 
 
