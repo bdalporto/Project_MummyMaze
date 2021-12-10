@@ -1,3 +1,17 @@
+# How to Run
+Download the project:
+
+     git clone https://github.com/bdalporto/Project_MummyMaze.git
+     
+Then, navigate to directory of project and execute the following:
+
+     stack build
+     stack exec mum-game-exe
+
+To run the unit tests (from within project directory):
+
+     stack test
+
 # CSE 230 FA21 Project Proposal
 #### Group Members:  Brandon DalPorto, Sarah Ekaireb
 
