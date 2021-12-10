@@ -5,7 +5,7 @@ import Levels as L
 import qualified Game as L
 
 main :: IO ()
-main = runTests [testLevelStartGameState, testWin, testLose,testMoves]
+main = runTests [testLevelStartGameState, testWin, testLose, testMoves]
 
 -- test that the starting gamestate of each level is playing
 testLevelStartGameState ::  Score -> TestTree
@@ -25,6 +25,7 @@ testLevelStartGameState sc = testGroup "testLevelStartGameState"
         scoreTest :: (Show b, Eq b) => (a -> b, a, b, Int, String) -> TestTree
         scoreTest (f, x, r, n, msg) = scoreTest' sc (return . f, x, r, n, msg)
 
+-- test checkGameState to make sure lose functionality works
 testLose ::  Score -> TestTree
 testLose sc = testGroup "testLose"
  [ scoreTest (G.checkGameState, gLose, L.Lose , 1, "testLose")
@@ -35,6 +36,7 @@ testLose sc = testGroup "testLose"
         scoreTest :: (Show b, Eq b) => (a -> b, a, b, Int, String) -> TestTree
         scoreTest (f, x, r, n, msg) = scoreTest' sc (return . f, x, r, n, msg)
 
+-- test checkWin to make sure win functionality works
 testWin ::  Score -> TestTree
 testWin sc = testGroup "testWin"
  [ scoreTest (G.checkWin, gWin, L.Win , 1, "testWin")
@@ -43,8 +45,10 @@ testWin sc = testGroup "testWin"
  where
         scoreTest :: (Show b, Eq b) => (a -> b, a, b, Int, String) -> TestTree
         scoreTest (f, x, r, n, msg) = scoreTest' sc (return . f, x, r, n, msg)
+
+-- tests the moveExplorer function
 testMoves ::  Score -> TestTree
-testMoves sc = testGroup "tesMoves"
+testMoves sc = testGroup "testMoves"
  [ scoreTest ((\(a,b) -> _explorer (G.moveExplorer a b),(L.West,validEmpty),  L.Coord 2 3 ,1, "testLeft"))
  , scoreTest ((\(a,b) -> _explorer (G.moveExplorer a b),(L.East,validEmpty),  L.Coord 4 3 ,1, "testRight"))
  , scoreTest ((\(a,b) -> _explorer (G.moveExplorer a b),(L.North,validEmpty),  L.Coord 3 2 ,1, "testUp"))

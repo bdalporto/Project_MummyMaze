@@ -104,8 +104,8 @@ level_5 = Game { _explorer = Coord 3 2
                  , _mummies  = [(Mummy {_mloc = Coord 4 0, _mct = 2, _mrct = 0})]
                  , _trap = [Coord 1 5]
                  , _keys = [Coord 4 5]
-                 , _vwalls    = [Coord 2 1, Coord 3 0, Coord 0 3, Coord 1 4, Coord 3 5]
-                 , _hwalls    = [Coord 4 2, Coord 3 2, Coord 5 4,Coord 5 1,Coord 1 5, Coord 7 6]
+                 , _vwalls    = [Coord 2 1, Coord 3 0, Coord 0 3, Coord 1 4, Coord 3 5, Coord 5 3]
+                 , _hwalls    = [Coord 4 2, Coord 3 2, Coord 5 4,Coord 5 1,Coord 1 5, Coord 7 6, Coord 4 8, Coord 5 8, Coord 6 8]
                  , _bsize    = 10
                  , _exit     = Coord 0 3
                  , _lock     = True
@@ -114,75 +114,75 @@ level_5 = Game { _explorer = Coord 3 2
                  , _keyCount = 1
                  } 
 level_6 :: Game
-level_6 = Game { _explorer = Coord 1 1
-                 , _mummies  = [(Mummy {_mloc = Coord 6 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
-                 , _trap = [Coord 2 2]
-                 , _keys = [Coord 2 1]
-                 , _vwalls    = [Coord 2 3, Coord 2 4, Coord 6 6, Coord 8 2, Coord 8 3, Coord 8 4]
-                 , _hwalls    = [Coord 3 0, Coord 2 3, Coord 3 3, Coord 6 6, Coord 7 6]
+level_6 = Game { _explorer = Coord 5 5
+                 , _mummies  = [(Mummy {_mloc = Coord 0 3, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 0 4, _mct = 2, _mrct = 0})]
+                 , _trap = [Coord 0 0]
+                 , _keys = [Coord 6 5]
+                 , _vwalls    = [Coord 0 3, Coord 3 0, Coord 1 0, Coord 2 0, Coord 2 2, Coord 2 5, Coord 4 4, Coord 5 1, Coord 5 2,  Coord 2 6, Coord 2 7, Coord 1 4,   Coord 7 0, Coord 7 1, Coord 8 1]
+                 , _hwalls    = [Coord 0 3, Coord 1 5, Coord 2 2, Coord 2 4, Coord 2 5, Coord 3 3, Coord 4 2, Coord 4 5, Coord 5 5,  Coord 5 6,   Coord 4 8, Coord 5 8, Coord 6 8, Coord 9 8]
                  , _bsize    = 10
-                 , _exit     = Coord 3 0
+                 , _exit     = Coord 0 3
                  , _lock     = True
                  , _gameState = Playing
                  , _level = 6
                  , _keyCount = 1
                  }
 level_7 :: Game
-level_7 = Game { _explorer = Coord 1 1
-                 , _mummies  = [(Mummy {_mloc = Coord 6 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
-                 , _trap = [Coord 2 2]
-                 , _keys = [Coord 2 1]
-                 , _vwalls    = [Coord 2 3, Coord 2 4, Coord 6 6, Coord 8 2, Coord 8 3, Coord 8 4]
-                 , _hwalls    = [Coord 3 0, Coord 2 3, Coord 3 3, Coord 6 6, Coord 7 6]
+level_7 = Game { _explorer = Coord 6 4
+                 , _mummies  = [(Mummy {_mloc = Coord 8 0, _mct = 2, _mrct = 0}),(Mummy {_mloc = Coord 9 2, _mct = 2, _mrct = 0})]
+                 , _trap = [Coord 6 6, Coord 1 7]
+                 , _keys = []
+                 , _vwalls    = [Coord 10 4, Coord 4 6, Coord 5 0, Coord 5 2, Coord 5 3, Coord 5 5, Coord 6 1, Coord 6 4, Coord 7 0, Coord 7 2, Coord 8 1, Coord 8 5, Coord 9 1, Coord 9 3, Coord 9 6,  Coord 1 1, Coord 1 2, Coord 3 7, Coord 6 9, Coord 6 8, Coord 1 8, Coord 2 8]
+                 , _hwalls    = [Coord 2 2, Coord 2 5, Coord 3 2, Coord 3 1, Coord 4 1, Coord 4 3, Coord 4 4, Coord 5 6, Coord 6 2, Coord 6 4, Coord 7 1, Coord 7 2, Coord 8 3, Coord 9 5, Coord 9 7,  Coord 1 8, Coord 2 8, Coord 3 8, Coord 0 1, Coord 7 8]
                  , _bsize    = 10
-                 , _exit     = Coord 3 0
+                 , _exit     = Coord 10 4
                  , _lock     = True
                  , _gameState = Playing
                  , _level = 7
-                 , _keyCount = 1
+                 , _keyCount = 0
                  }
 level_8 :: Game
-level_8 = Game { _explorer = Coord 1 1
-                 , _mummies  = [(Mummy {_mloc = Coord 6 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
-                 , _trap = [Coord 2 2]
-                 , _keys = [Coord 2 1]
-                 , _vwalls    = [Coord 2 3, Coord 2 4, Coord 6 6, Coord 8 2, Coord 8 3, Coord 8 4]
-                 , _hwalls    = [Coord 3 0, Coord 2 3, Coord 3 3, Coord 6 6, Coord 7 6]
+level_8 = Game { _explorer = Coord 2 4
+                 , _mummies  = [(Mummy {_mloc = Coord 1 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 0 0, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 9 1, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 9 8, _mct = 2, _mrct = 0})]
+                 , _trap = [Coord 1 6, Coord 8 3]
+                 , _keys = [Coord 2 6, Coord 5 4]
+                 , _vwalls    = [Coord 1 4, Coord 4 4, Coord 2 5, Coord 2 6, Coord 4 6, Coord 5 6,  Coord 8 2, Coord 8 3, Coord 7 1,  Coord 3 1,   Coord 5 8]
+                 , _hwalls    = [Coord 3 10, Coord 3 5, Coord 5 5, Coord 0 6, Coord 2 7, Coord 3 8, Coord 1 9, Coord 2 9,   Coord 7 3, Coord 6 3, Coord 8 8, Coord 9 8, Coord 10 8, Coord 2 2, Coord 1 2,  Coord 7 2,   Coord 5 8, Coord 6 8]
                  , _bsize    = 10
-                 , _exit     = Coord 3 0
+                 , _exit     = Coord 3 10
                  , _lock     = True
                  , _gameState = Playing
                  , _level = 8
-                 , _keyCount = 1
+                 , _keyCount = 2
                  }
 level_9 :: Game
-level_9 = Game { _explorer = Coord 1 1
-                 , _mummies  = [(Mummy {_mloc = Coord 6 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
-                 , _trap = [Coord 2 2]
-                 , _keys = [Coord 2 1]
-                 , _vwalls    = [Coord 2 3, Coord 2 4, Coord 6 6, Coord 8 2, Coord 8 3, Coord 8 4]
-                 , _hwalls    = [Coord 3 0, Coord 2 3, Coord 3 3, Coord 6 6, Coord 7 6]
+level_9 = Game { _explorer = Coord 8 8
+                 , _mummies  = [(Mummy {_mloc = Coord 8 6, _mct = 2, _mrct = 0})]
+                 , _trap = [Coord 2 6, Coord 2 4, Coord 1 1, Coord 4 9]
+                 , _keys = [Coord 2 1, Coord 7 3]
+                 , _vwalls    = [Coord 0 3, Coord 3 4, Coord 9 0, Coord 4 1, Coord 1 2, Coord 2 2, Coord 3 2, Coord 5 2, Coord 4 3, Coord 9 3, Coord 4 4, Coord 7 4, Coord 5 6, Coord 9 6, Coord 4 7, Coord 1 8, Coord 7 8]
+                 , _hwalls    = [Coord 7 1, Coord 0 4, Coord 0 6, Coord 0 7, Coord 1 9, Coord 2 7, Coord 3 4, Coord 4 6, Coord 4 8, Coord 4 9, Coord 5 4, Coord 5 7, Coord 6 8, Coord 6 9, Coord 7 1, Coord 7 6, Coord 7 7, Coord 7 8, Coord 8 2, Coord 8 6, Coord 8 8, Coord 9 5, Coord 9 9]
                  , _bsize    = 10
-                 , _exit     = Coord 3 0
+                 , _exit     = Coord 0 3
                  , _lock     = True
                  , _gameState = Playing
                  , _level = 9
-                 , _keyCount = 1
+                 , _keyCount = 2
                  }
 level_10 :: Game
-level_10 = Game { _explorer = Coord 1 1
-                 , _mummies  = [(Mummy {_mloc = Coord 6 6, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0})]
-                 , _trap = [Coord 2 2]
-                 , _keys = [Coord 2 1]
-                 , _vwalls    = [Coord 2 3, Coord 2 4, Coord 6 6, Coord 8 2, Coord 8 3, Coord 8 4]
-                 , _hwalls    = [Coord 3 0, Coord 2 3, Coord 3 3, Coord 6 6, Coord 7 6]
+level_10 = Game { _explorer = Coord 7 8
+                 , _mummies  = [(Mummy {_mloc = Coord 8 3, _mct = 2, _mrct = 0}), (Mummy {_mloc = Coord 9 8, _mct = 2, _mrct = 0})]
+                 , _trap = [Coord 6 5]
+                 , _keys = [Coord 4 6, Coord 7 7]
+                 , _vwalls    = [Coord 10 9, Coord 1 0, Coord 1 1, Coord 1 8, Coord 2 1, Coord 2 2, Coord 2 3, Coord 2 6, Coord 3 1, Coord 4 0, Coord 4 4, Coord 4 8, Coord 5 1, Coord 5 2, Coord 5 7, Coord 5 9, Coord 6 2, Coord 6 5, Coord 7 5, Coord 7 6, Coord 8 4, Coord 8 7, Coord 8 9, Coord 9 3, Coord 9 8]
+                 , _hwalls    = [Coord 0 7, Coord 0 9, Coord 1 8, Coord 2 2, Coord 2 6, Coord 3 6, Coord 3 2, Coord 4 7, Coord 5 3, Coord 5 4, Coord 5 5, Coord 6 1, Coord 6 3, Coord 6 4, Coord 7 8, Coord 8 1, Coord 9 8]
                  , _bsize    = 10
-                 , _exit     = Coord 3 0
+                 , _exit     = Coord 10 9
                  , _lock     = True
                  , _gameState = Playing
                  , _level = 10
-                 , _keyCount = 1
-                 }                 
+                 , _keyCount = 2
+                 }                
 
 
 

@@ -162,8 +162,8 @@ setMummyCounter m = m {_mrct = mct}
 -- Checks if a move is valid given: direction, current coordinates, game
 validMove :: MyDirection -> Coord -> Game -> Coord
 validMove d c@(Coord x y) g | c == _exit g &&  _keyCount g == 0 && d == North && elem c (_hwalls g) && y == 0 = Coord x (y-1)
-                          | c == _exit g &&  _keyCount g == 0 && d == South && elem c (_hwalls g) && y /= 0 = Coord x (y+1)
-                          | c == _exit g &&  _keyCount g == 0 && d == East && elem c (_vwalls g) && x /= 0 = Coord (x+1) y
+                          | (Coord x (y+1)) == _exit g &&  _keyCount g == 0 && d == South && elem (Coord x (y+1)) (_hwalls g) && y /= 0 = Coord x (y+1)
+                          | (Coord (x+1) y) == _exit g &&  _keyCount g == 0 && d == East && elem (Coord (x+1) y) (_vwalls g) && x /= 0 = Coord (x+1) y
                           | c == _exit g &&  _keyCount g == 0 && d == West && elem c (_vwalls g) && x == 0 = Coord (x-1) y
                           | d == North && notElem (Coord x y) (_hwalls g) && y-1 >= 0 = Coord x (y-1)
                           | d == South && notElem (Coord x (y+1)) (_hwalls g) && y+1 < b = Coord x (y+1)
