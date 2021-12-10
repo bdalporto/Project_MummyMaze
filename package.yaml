@@ -55,3 +55,12 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - mum-game
+    - base
+    - containers
+    - mtl
+    - filepath
+    - QuickCheck
+    - tasty
+    - tasty-hunit
+    - tasty-quickcheck
+    - process

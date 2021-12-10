@@ -34,7 +34,7 @@ data Game = Game
 
 data Coord = Coord { x :: Int, y :: Int} deriving (Eq, Ord, Show)
 
-data GameState = SelectScreen | Win | Lose | Playing | Over
+data GameState = SelectScreen | Win | Lose | Playing | Over deriving (Show, Eq)
 
 data Mummy = Mummy
     { _mloc :: Coord
